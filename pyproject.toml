@@ -23,5 +23,9 @@ pytest = "^8.4.2"
 pytest-mock = "^3.15.0"
 pytest-django = "^4.11.1"
 
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.3.8"
+
 [tool.poetry]
 package-mode = false
