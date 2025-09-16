@@ -1,7 +1,7 @@
 import pytest
-from blog_app.models import Post, Author, Comment, Tag
-from blog_app.forms import PostForm, PostModelForm
 from django.urls import reverse
+from blog_app.models import Author, Tag
+from blog_app.forms import PostModelForm
 
 #
 # @pytest.mark.django_db
@@ -30,16 +30,15 @@ from django.urls import reverse
 
 @pytest.mark.django_db
 def test_post_modelform_valid(client):
-    author = Author.objects.create(name='Bob')
-    tag = Tag.objects.create(name='django')
+    author = Author.objects.create(name="Bob")
+    tag = Tag.objects.create(name="django")
     form_data = {
-        'title': 'Coach be until пост',
-        'content': 'After themselves sea build baby spend make. Apply  содержание',
-        'rating': 8,
-        'author': author,
-        'tags': [tag.id],
+        "title": "Coach be until пост",
+        "content": "After themselves sea build baby spend make. Apply  содержание",
+        "rating": 8,
+        "author": author,
+        "tags": [tag.id],
     }
-
 
     form = PostModelForm(form_data)
     # assert True

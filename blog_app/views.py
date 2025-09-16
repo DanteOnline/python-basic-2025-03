@@ -1,31 +1,38 @@
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
-from .models import Post, Author
-from .forms import PostForm, PostModelForm
+from django.shortcuts import render
+from django.views.generic import (
+    ListView,
+    DetailView,
+    UpdateView,
+    CreateView,
+    DeleteView,
+)
+from .models import Post
+from .forms import PostModelForm
 
 
 def index(request):
-    return render(request, 'blog_app/index.html')
+    return render(request, "blog_app/index.html")
 
 
 def about(request):
-    return HttpResponse('<h2>ABOUT US</h2>')
+    return HttpResponse("<h2>ABOUT US</h2>")
 
 
 class PostListView(ListView):
     """Представление для отображения списка постов."""
+
     model = Post
     # template_name = 'blog_app/post_list.html'
-    context_object_name = 'posts'
+    context_object_name = "posts"
 
     def get_queryset(self):
         """Фильтрует список постов по рейтингу."""
         queryset = super().get_queryset()
-        min_rating = self.request.GET.get('rating')
-        author = self.request.GET.get('author')
+        min_rating = self.request.GET.get("rating")
+        author = self.request.GET.get("author")
 
         if min_rating:
             queryset = queryset.filter(rating__gte=min_rating)
@@ -38,53 +45,58 @@ class PostListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['authors'] = Author.objects.all()
-        context['title'] = 'Список постов!!!'
+        context["title"] = "Список постов!!!"
         return context
 
 
 class PostDetailView(DetailView):
     """Представление для отображения деталей поста."""
+
     model = Post
     # template_name = 'blog_app/post_detail.html'
-    context_object_name = 'post'
+    context_object_name = "post"
 
     def get(self, request, *args, **kwargs):
         post = self.get_object()
-        post.rating = getattr(post, 'rating', 0) + 1
-        post.save(update_fields=['rating'])
+        post.rating = getattr(post, "rating", 0) + 1
+        post.save(update_fields=["rating"])
         return super().get(request, *args, **kwargs)
 
 
 class PostCreateView(CreateView):
     """Представление для создания поста."""
+
     model = Post
-    template_name = 'blog_app/add_post.html'
-    success_url = reverse_lazy('post_list')
+    template_name = "blog_app/add_post.html"
+    success_url = reverse_lazy("post_list")
     form_class = PostModelForm
 
     def form_valid(self, form):
-        messages.success(self.request, 'Пост успешно создан')
+        messages.success(self.request, "Пост успешно создан")
         return super().form_valid(form)
 
 
 class PostUpdateView(UpdateView):
     """Представление для обновления поста."""
+
     model = Post
-    template_name = 'blog_app/edit_post.html'
-    success_url = reverse_lazy('post_list')
+    template_name = "blog_app/edit_post.html"
+    success_url = reverse_lazy("post_list")
     form_class = PostModelForm
 
     def form_valid(self, form):
-        messages.success(self.request, 'Пост успешно обновлен')
+        messages.success(self.request, "Пост успешно обновлен")
         return super().form_valid(form)
 
 
 class PostDeleteView(DeleteView):
     """Представление для удаления поста."""
+
     model = Post
-    template_name = 'blog_app/delete_post.html'
-    success_url = reverse_lazy('post_list')
-    context_object_name = 'post'
+    template_name = "blog_app/delete_post.html"
+    success_url = reverse_lazy("post_list")
+    context_object_name = "post"
+
 
 # def post_list(request):
 #     posts = Post.objects.all()

@@ -1,14 +1,15 @@
-from django.core.management.base import BaseCommand
-from blog_app.models import Post, Author, Comment
 import random
 from faker import Faker
+from django.core.management.base import BaseCommand
+from blog_app.models import Post, Author, Comment
+
 
 
 class Command(BaseCommand):
-    help = 'Генерация фейковых данных'
+    help = "Генерация фейковых данных"
 
     def handle(self, *args, **kwargs):
-        self.stdout.write('Начинаем генерацию....')
+        self.stdout.write("Начинаем генерацию....")
 
         fake = Faker()
 
@@ -17,8 +18,7 @@ class Command(BaseCommand):
             author_name = fake.first_name()
             author = Author.objects.create(name=author_name)
             authors.append(author)
-        self.stdout.write(f'Создали {len(authors)} авторов')
-
+        self.stdout.write(f"Создали {len(authors)} авторов")
 
         posts = []
         for i in range(10):
@@ -29,11 +29,10 @@ class Command(BaseCommand):
                 title=post_title,
                 content=post_content,
                 author=post_author,
-                rating=random.randint(1, 5)
+                rating=random.randint(1, 5),
             )
             posts.append(post)
-        self.stdout.write(f'Создали {len(posts)} постов')
-
+        self.stdout.write(f"Создали {len(posts)} постов")
 
         comments = []
         for i in range(20):
@@ -46,6 +45,6 @@ class Command(BaseCommand):
                 author=comment_author,
             )
             comments.append(comment)
-        self.stdout.write(f'Создали {len(comments)} комментариев')
+        self.stdout.write(f"Создали {len(comments)} комментариев")
 
-        self.stdout.write('Завершили генерацию!')
+        self.stdout.write("Завершили генерацию!")
