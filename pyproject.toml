@@ -27,6 +27,7 @@ pytest-django = "^4.11.1"
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.3.8"
 black = "^25.1.0"
+pytest-cov = "^7.0.0"
 
 [tool.poetry]
 package-mode = false
